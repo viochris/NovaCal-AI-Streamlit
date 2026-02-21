@@ -12,7 +12,9 @@
 
 Unlike standard chatbots that struggle with external APIs, NovaCal utilizes a deterministic reasoning engine. It understands your natural language requests, strategically selects the correct Google Calendar tools, and executes precise scheduling actions (Create, Read, Update, Delete). It features a dual-interface design, offering both a conversational AI chat and a fully interactive Visual Calendar dashboard.
 
-> **📱 TELEGRAM BOT VERSION (NO MEMORY):** Looking for a lightweight, mobile-friendly option? Check out the **[NovaCal AI Telegram Repository](https://github.com/viochris/NovaCal-AI-Telegram.git)**. It operates on a lightning-fast, **Zero-Memory (Stateless)** architecture optimized for quick, single-turn calendar commands directly from your chat!
+> **🌐 EXPLORE NOVACAL AI ON TELEGRAM:**
+> * **[Stateful Edition (With Memory)](https://github.com/viochris/telegram-calendar-ai-bot.git):** If you are looking for the conversational, SQL-backed memory version capable of natural multi-turn interactions and follow-up commands.
+> * **[Stateless Edition (No Memory)](https://github.com/viochris/NovaCal-AI-Telegram.git):** Looking for a lightweight, mobile-friendly option? It operates on a lightning-fast, **Zero-Memory (Stateless)** architecture optimized for quick, single-turn calendar commands directly from your chat!
 
 ## ✨ Key Features
 ### 🧠 Tool-Calling Agent Architecture
