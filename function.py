@@ -1,3 +1,4 @@
+import os
 import json
 import streamlit as st
 from google.oauth2.credentials import Credentials
@@ -13,6 +14,29 @@ def init_state():
     Ensures that variables exist before they are called, preventing KeyError exceptions
     during Streamlit's reactive UI re-runs.
     """
+
+    # ==========================================
+    # DYNAMIC CREDENTIAL GENERATOR FOR STREAMLIT
+    # ==========================================
+    # LangChain's CalendarToolkit strictly requires physical 'credentials.json' and 'token.json' files.
+    # Since we cannot upload these to GitHub, we store their raw JSON strings in st.secrets
+    # and dynamically write them to temporary physical files on the server upon startup.
+
+    # 1. Generate 'credentials.json' from st.secrets if it doesn't exist
+    if not os.path.exists("credentials.json"):
+        if "files" in st.secrets and "google_calendar_credentials" in st.secrets["files"]:
+            with open("credentials.json", "w") as f:
+                f.write(st.secrets["files"]["google_calendar_credentials"])
+
+    # 2. Generate 'token.json' from st.secrets if it doesn't exist
+    if not os.path.exists("token.json"):
+        if "files" in st.secrets and "google_calendar_token" in st.secrets["files"]:
+            with open("token.json", "w") as f:
+                f.write(st.secrets["files"]["google_calendar_token"])
+
+    # ==========================================
+    # CORE SESSION STATE VARIABLES
+    # ==========================================
     # 1. Initialize the chat history array to store user and AI messages
     if "messages" not in st.session_state:
         st.session_state.messages = []
@@ -101,18 +125,7 @@ def get_schedules():
     """
     try:
         # 1. Authenticate using the stored OAuth token with full read/write scope
-        scopes = ['https://www.googleapis.com/auth/calendar']
-        
-        # Check if the token exists in Streamlit Secrets under the specific path
-        if "files" in st.secrets and "google_calendar_token" in st.secrets["files"]:
-            # Parse the raw JSON string from Streamlit Secrets
-            raw_token = st.secrets["files"]["google_calendar_token"]
-            token_info = json.loads(raw_token)
-            creds = Credentials.from_authorized_user_info(token_info, scopes)
-        else:
-            # Fallback to local file if secrets are not found
-            creds = Credentials.from_authorized_user_file("token.json", scopes)
-            
+        creds = Credentials.from_authorized_user_file('token.json', ['https://www.googleapis.com/auth/calendar'])
         service = build('calendar', 'v3', credentials=creds)
 
         # 2. Query the Google Calendar API
@@ -163,18 +176,7 @@ def get_id_of_schedules(keyword: str) -> str:
     """
     try:
         # 1. Authenticate with the Google Calendar API using the predefined scopes
-        scopes = ['https://www.googleapis.com/auth/calendar']
-        
-        # Check if the token exists in Streamlit Secrets under the specific path
-        if "files" in st.secrets and "google_calendar_token" in st.secrets["files"]:
-            # Parse the raw JSON string from Streamlit Secrets
-            raw_token = st.secrets["files"]["google_calendar_token"]
-            token_info = json.loads(raw_token)
-            creds = Credentials.from_authorized_user_info(token_info, scopes)
-        else:
-            # Fallback to local file if secrets are not found
-            creds = Credentials.from_authorized_user_file("token.json", scopes)
-            
+        creds = Credentials.from_authorized_user_file('token.json', ['https://www.googleapis.com/auth/calendar'])
         service = build('calendar', 'v3', credentials=creds)
 
         # 2. Execute a free-text search query ('q') against the primary calendar
@@ -235,20 +237,10 @@ def get_all_schedules(start_date: str, end_date: str) -> str:
     If the user asks for a single day's schedule (e.g., "today"), provide the exact same date for both inputs.
     """
     try:
-        # 1. Authenticate with Google Calendar API using stored credentials
-        scopes = ['https://www.googleapis.com/auth/calendar']
-        
-        # Check if the token exists in Streamlit Secrets under the specific path
-        if "files" in st.secrets and "google_calendar_token" in st.secrets["files"]:
-            # Parse the raw JSON string from Streamlit Secrets
-            raw_token = st.secrets["files"]["google_calendar_token"]
-            token_info = json.loads(raw_token)
-            creds = Credentials.from_authorized_user_info(token_info, scopes)
-        else:
-            # Fallback to local file if secrets are not found
-            creds = Credentials.from_authorized_user_file("token.json", scopes)
-            
+        # 1. Authenticate with the Google Calendar API using the predefined scopes.
+        creds = Credentials.from_authorized_user_file('token.json', ['https://www.googleapis.com/auth/calendar'])
         service = build('calendar', 'v3', credentials=creds)
+
         
         # 2. Format the time boundaries (Appending +07:00 for WIB/Jakarta Timezone)
         timeMin = f"{start_date}T00:00:00+07:00"
