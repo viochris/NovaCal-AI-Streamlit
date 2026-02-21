@@ -41,15 +41,14 @@ Using `create_tool_calling_agent`, the system navigates a strict Standard Operat
 * **UI Components:** `streamlit-calendar`.
 
 ## ⚠️ Limitations & Disclaimers
-
 ### 1. Authentication Setup
 * Requires a manual initial setup to generate a `token.json` file via the Google Cloud Console (OAuth 2.0 Client IDs) before the script can access your calendar.
-
 ### 2. Timezone Hardcoding
 * The time boundary extraction in the custom fetcher tools currently uses a fixed `+07:00` (WIB/Jakarta) timezone offset for daily queries.
-
 ### 3. Native Tool Bypassing
 * Native LangChain search tools (`CalendarSearchEvents`) are intentionally disabled/banned in the system prompt due to instability, replaced entirely by custom-built extraction functions for maximum reliability.
+### 4. Occasional Contextual Amnesia (Over-Caution)
+* While equipped with a session-based conversational memory buffer, generative models like Gemini 2.5 Flash can occasionally struggle with multi-turn context correlation. Even with explicit system instructions to check the chat history first, the AI might become overly cautious and ask to re-verify a detail (such as the event time or title) that you provided earlier. If this looping behavior occurs, you can explicitly command it to *"just create it with the provided details"*, or simply bypass the loop by providing all event parameters in a single comprehensive message (treating it temporarily like a zero-memory bot).
 
 ## 📦 Installation
 
