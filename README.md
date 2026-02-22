@@ -14,6 +14,7 @@ Unlike standard chatbots that struggle with external APIs, NovaCal utilizes a de
 
 > **🌐 EXPLORE NOVACAL AI ON TELEGRAM:**
 > * **[Stateful Edition (With Memory)](https://github.com/viochris/telegram-calendar-ai-bot.git):** If you are looking for the conversational, SQL-backed memory version capable of natural multi-turn interactions and follow-up commands.
+> * **[Ephemeral Edition (Slot-Filling Memory)](https://github.com/viochris/NovaCal-Ephemeral-AI.git):** If you need a balanced architecture using temporary RAM-based memory that auto-clears after each task to save API tokens while allowing multi-turn inputs.
 > * **[Stateless Edition (No Memory)](https://github.com/viochris/NovaCal-AI-Telegram.git):** Looking for a lightweight, mobile-friendly option? It operates on a lightning-fast, **Zero-Memory (Stateless)** architecture optimized for quick, single-turn calendar commands directly from your chat!
 
 ## ✨ Key Features
