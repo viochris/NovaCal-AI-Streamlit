@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime, timezone, timedelta
 import streamlit as st
 
 # --- LangChain & Generative AI Libraries ---
@@ -225,7 +225,9 @@ if "agent_executor" not in st.session_state \
     
     try:
         # 2. Capture the Exact Current System Time for Contextual Accuracy
-        current_datetime = datetime.datetime.now().strftime("%A, %d %B %Y %H:%M:%S")
+        wib_timezone = timezone(timedelta(hours=7))
+        current_datetime = datetime.now(wib_timezone).strftime("%Y-%m-%d %H:%M:%S WIB")
+
 
         # 3. Construct the Custom Hybrid Tool-Calling Prompt
         # This serves as the core "Brain" of the agent, defining strict Standard Operating Procedures (SOP) for Calendar management.
