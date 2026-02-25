@@ -135,7 +135,8 @@ def get_schedules():
             calendarId="primary",
             maxResults=2500,
             singleEvents=True,
-            orderBy='startTime'
+            orderBy='startTime',
+            timeZone='Asia/Jakarta'
         ).execute()
 
         # 3. Extract the array of event items from the API payload
@@ -185,7 +186,8 @@ def get_id_of_schedules(keyword: str) -> str:
             q=keyword,          # The search keyword provided by the AI
             maxResults=10,      # Limit the results to prevent token overflow
             singleEvents=True,  # Expand recurring events into single instances
-            orderBy='startTime'
+            orderBy='startTime',
+            timeZone='Asia/Jakarta'
         ).execute()
 
         # 3. Extract the array of events from the API payload
