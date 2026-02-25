@@ -1,4 +1,4 @@
-from datetime import datetime, timezone, timedelta
+from datetime import date, datetime, timezone, timedelta
 import streamlit as st
 
 # --- LangChain & Generative AI Libraries ---
@@ -109,7 +109,7 @@ with st.sidebar:
     st.subheader("📋 Today's Agenda") # <-- KITA TAMBAHIN HEADER KHUSUS JADWAL!
     
     # Automatically fetches and renders today's agenda upon sidebar load.
-    today_date = datetime.date.today().strftime("%Y-%m-%d")
+    today_date = date.today().strftime("%Y-%m-%d")
     
     try: 
         today_schedules = get_all_schedules.invoke({
@@ -227,7 +227,6 @@ if "agent_executor" not in st.session_state \
         # 2. Capture the Exact Current System Time for Contextual Accuracy
         wib_timezone = timezone(timedelta(hours=7))
         current_datetime = datetime.now(wib_timezone).strftime("%Y-%m-%d %H:%M:%S WIB")
-
 
         # 3. Construct the Custom Hybrid Tool-Calling Prompt
         # This serves as the core "Brain" of the agent, defining strict Standard Operating Procedures (SOP) for Calendar management.
