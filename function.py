@@ -241,7 +241,6 @@ def get_all_schedules(start_date: str, end_date: str) -> str:
         creds = Credentials.from_authorized_user_file('token.json', ['https://www.googleapis.com/auth/calendar'])
         service = build('calendar', 'v3', credentials=creds)
 
-        
         # 2. Format the time boundaries (Appending +07:00 for WIB/Jakarta Timezone)
         timeMin = f"{start_date}T00:00:00+07:00"
         timeMax = f"{end_date}T23:59:59+07:00"
@@ -259,7 +258,8 @@ def get_all_schedules(start_date: str, end_date: str) -> str:
                     timeMax=timeMax,
                     maxResults=50,      # Increased limit to accommodate multi-day ranges
                     singleEvents=True,  # Expand recurring events into single instances
-                    orderBy='startTime'
+                    orderBy='startTime',
+                    timeZone='Asia/Jakarta'
                 ).execute()
                 all_events.extend(result.get("items", []))
             except:
